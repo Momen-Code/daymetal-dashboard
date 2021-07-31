@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 //Styles
 import "./style.scss";
@@ -42,7 +43,7 @@ const Login = () => {
               />
             </div>
             <div className="button-container">
-              <button type="submit">Login</button>
+              <Link to="/products">Login</Link>
             </div>
           </form>
         </div>

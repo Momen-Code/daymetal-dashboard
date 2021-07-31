@@ -6,7 +6,8 @@ import {
   Switch,
 } from "react-router-dom";
 
-import { Login } from "./routes";
+import { Login, Orders, Products } from "./routes";
+import { NavBar } from "./components";
 
 function App() {
   return (
@@ -14,6 +15,11 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={Login} />
+          <div>
+            <NavBar />
+            <Route path="/products" component={Products} />
+            <Route path="/orders" component={Orders} />
+          </div>
         </Switch>
       </Router>
     </div>
