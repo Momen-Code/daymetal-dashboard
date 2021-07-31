@@ -17,7 +17,7 @@ import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 
 const NavBar = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   //   const { setIsLoggedIn } = useAuthContext();
   //   const { createNotification } = useAppContext();
