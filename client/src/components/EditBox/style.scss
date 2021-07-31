@@ -1,0 +1,5 @@
+@import "../../assets/styles/global";
+
+.edit-box-container {
+  @include floatingBox;
+}

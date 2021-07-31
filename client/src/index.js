@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 
 import App from "./App";
 
+document.querySelector("title").textContent = "Daymetal";
+document.querySelector("html").setAttribute("lang", "en");
+document.querySelector("html").setAttribute("dir", "ltr");
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
