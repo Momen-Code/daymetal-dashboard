@@ -1,34 +1,79 @@
 const express = require("express");
-const User = require("../../models/User");
- const router = express.Router();
-
+const UserModel = require("../../models/User");
+const router = express.Router();
 
 router.post("/", async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      username,
+      password,
+      confirmPassword,
+      mobileNumber,
+      role,
+    } = req.body;
 
-    const emailExist = await User.findOne({email: req.body.email});
-    if(emailExist) return res.status(400).send("Email already Exists");
+    //Validations
+    if (!name) {
+      return res.json({
+        status: false,
+        message: "Name is required",
+      });
+    }
+    if (!username) {
+      return res.json({
+        status: false,
+        message: "username is required",
+      });
+    }
+    if (!password) {
+      return res.json({
+        status: false,
+        message: "password is required",
+      });
+    }
+    if (password != confirmPassword) {
+      return res.json({
+        status: false,
+        message: "passwords don't match",
+      });
+    }
+    if (!mobileNumber) {
+      return res.json({
+        status: false,
+        message: "mobile number is required",
+      });
+    }
+    if (!role) {
+      return res.json({
+        status: false,
+        message: "role is required",
+      });
+    }
 
-    const userNameExist = await User.findOne({username: req.body.username});
-    if(userNameExist) return res.status(400).send("userName already Exists");
+    //Search for other usernames , emails
+    const userSearch = await UserModel.findOne({ username, email });
 
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        mobilenumber: req.body.mobilenumber
+    if (userSearch)
+      return res.json({ status: false, message: "username already exist" });
 
+    //Save user to DB
+    const savedUser = await UserModel.create({
+      name,
+      email,
+      username,
+      password,
+      confirmPassword,
+      mobileNumber,
+      role,
     });
 
-    
-    try{
-        const savedUser = await user.save();
-        res.send(savedUser);
-    }
-    catch(e){
-        res.status(400).send(e);
-    }
-
+    //Send Success
+    return res.json({ status: true, message: "User successfully created" });
+  } catch (e) {
+    console.log(`error in signing up -> ${e}`);
+  }
 });
 
 module.exports = router;

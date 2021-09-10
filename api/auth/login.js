@@ -1,19 +1,50 @@
 const express = require("express");
-const User = require("../../models/User");
+const { createToken } = require("../../middlewares/jwt");
+const UserModel = require("../../models/User");
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const emailExist = await User.findOne({email: req.body.email});
-    if(!emailExist) return res.status(400).send("email or password is incorrect");
+  try {
+    const { username, password } = req.body;
 
-    const passExist = await User.findOne({password: req.body.password});
-    if(!passExist) return res.status(400).send("incorrect password");
+    //Validation
+    if (!username) {
+      return res.json({ status: false, message: "username is required" });
+    }
+    if (!password) {
+      return res.json({ status: false, message: "password is required" });
+    }
 
-    res.send("logged in");
+    //Find by username
+    let userSearch = await UserModel.findOne({ username });
 
+    if (!userSearch) {
+      return res.json({ status: false, message: "invalid credentials" });
+    }
 
+    //Find by password
+    if (!password == userSearch.password) {
+      return res.json({ status: false, message: "invalid credentials" });
+    }
 
+    //Send the jwt token with the success response
+    const accessToken = await createToken({ _id: userSearch._id });
+
+    res.cookie("access_token", accessToken, { maxAge: 86400 * 1000 });
+    res.cookie("user_data", JSON.stringify(userSearch), {
+      maxAge: 86400 * 1000,
+    });
+
+    return res.json({
+      status: true,
+      message: "User logged in successfully",
+      data: userSearch,
+      accessToken,
+    });
+  } catch (e) {
+    console.log(`Error in logging in ${e}`);
+  }
 });
 
 module.exports = router;
