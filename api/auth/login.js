@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
     }
 
     //Find by password
-    if (!password == userSearch.password) {
+    if (password != userSearch.password) {
       return res.json({ status: false, message: "invalid credentials" });
     }
 
