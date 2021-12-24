@@ -2,18 +2,7 @@ const express = require("express");
 const ProductModel = require("../../models/product");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-
-
-    //   const product = new Product({
-    //       name: req.body.name,
-    //       price: req.body.price,
-    //       measurment_unit: req.body.measurment_unit,
-    //       category: req.body.category,
-    //       colors: req.body.colors,
-    //       sizes: req.body.sizes
-
-    //   });
+const addProduct =  async (req, res) => {
 
     try {
         const { name, price, measurment_unit, category, colors, sizes } = req.body;
@@ -48,23 +37,8 @@ router.post("/", async (req, res) => {
     catch (e) {
         console.log(`Error in adding product ->${e}`);
     }
-})
+}
 
 
 
-module.exports = router;
-
-//router.get("/",  (req,res,next) => {
-//     Product.find()
-//     .then(result=>{
-//         res.status(200).json({
-//             prooductData:result
-//         })
-//     })
-//     .catch(e=>{
-//         console.log(e);
-//         res.status(400).json({
-//             error:e
-//         })
-//     })
-// })
+module.exports = addProduct;
