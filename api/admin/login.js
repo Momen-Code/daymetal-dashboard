@@ -1,10 +1,10 @@
 const express = require("express");
 const { createToken } = require("../../middlewares/jwt");
-const UserModel = require("../../models/User");
+const AdminModel = require("../../models/Admin");
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+const login =  async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     }
 
     //Find by username
-    let userSearch = await UserModel.findOne({ username });
+    let userSearch = await AdminModel.findOne({ username });
 
     if (!userSearch) {
       return res.json({ status: false, message: "invalid credentials" });
@@ -45,6 +45,6 @@ router.post("/", async (req, res) => {
   } catch (e) {
     console.log(`Error in logging in ${e}`);
   }
-});
+};
 
-module.exports = router;
+module.exports = login;

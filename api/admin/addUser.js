@@ -1,24 +1,15 @@
 const express = require("express");
 const UserModel = require("../../models/User");
-const router = express.Router();
 
-router.post("/", async (req, res) => {
+const addUser = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      username,
-      password,
-      confirmPassword,
-      mobileNumber,
-      role,
-    } = req.body;
+    const { name, username, password, email, mobileNumber } = req.body;
 
     //Validations
     if (!name) {
       return res.json({
         status: false,
-        message: "Name is required",
+        message: "name is required",
       });
     }
     if (!username) {
@@ -27,16 +18,10 @@ router.post("/", async (req, res) => {
         message: "username is required",
       });
     }
-    if (!password) {
+    if (!email) {
       return res.json({
         status: false,
-        message: "password is required",
-      });
-    }
-    if (password != confirmPassword) {
-      return res.json({
-        status: false,
-        message: "passwords don't match",
+        message: "email is required",
       });
     }
     if (!mobileNumber) {
@@ -45,14 +30,14 @@ router.post("/", async (req, res) => {
         message: "mobile number is required",
       });
     }
-    if (!role) {
+    if (!password) {
       return res.json({
         status: false,
-        message: "role is required",
+        message: "password is required",
       });
     }
 
-    //Search for other usernames , emails
+    //Search for other usernames
     const userSearch = await UserModel.findOne({ username, email });
 
     if (userSearch)
@@ -61,19 +46,21 @@ router.post("/", async (req, res) => {
     //Save user to DB
     const savedUser = await UserModel.create({
       name,
-      email,
       username,
       password,
-      confirmPassword,
+      email,
       mobileNumber,
-      role,
     });
 
     //Send Success
-    return res.json({ status: true, message: "User successfully created" });
+    return res.json({
+      status: true,
+      message: "User successfully created",
+      data: savedUser,
+    });
   } catch (e) {
-    console.log(`error in signing up -> ${e}`);
+    console.log(`error in signing up new user-> ${e}`);
   }
-});
+};
 
-module.exports = router;
+module.exports = addUser;
