@@ -1,5 +1,6 @@
 const express = require("express");
 const UserModel = require("../../models/User");
+const { v4: uuidv4 } = require("uuid");
 
 const addUser = async (req, res) => {
   try {
@@ -43,8 +44,11 @@ const addUser = async (req, res) => {
     if (userSearch)
       return res.json({ status: false, message: "username already exist" });
 
+    const userId = uuidv4();
+
     //Save user to DB
     const savedUser = await UserModel.create({
+      userId,
       name,
       username,
       password,
