@@ -22,7 +22,7 @@ const editUser = async (req, res) => {
     if (!(await UserModel.findById(_id).lean()))
       return res.json({
         status: false,
-        message: "لا يوجد مستخدم بهذا الرقم التعريفي",
+        message: "Id not found",
       });
 
     let SearchedUser = await UserModel.findOne({ _id, username });
@@ -51,13 +51,13 @@ const editUser = async (req, res) => {
 
     return res.json({
       status: true,
-      message: "تم تحديث حالة المستخدم بنجاح",
+      message: "User updated successfully",
       data: {
         user: userSearch,
       },
     });
   } catch (e) {
-    console.log(`Error in POST /api/admin/users: ${e.message}`, e);
+    console.log(`Error in POST /api/common/users: ${e.message}`, e);
     return res.json({
       status: false,
       message: "حدث خطأ ما ، يرجي الرجوع للمطور",
