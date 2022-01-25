@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { checkAdminToken, checkUserToken } = require("../middlewares/jwt");
+const {
+  checkAdminToken,
+  checkUserToken,
+  checkGlobalToken,
+} = require("../middlewares/jwt");
 
 // Admin routes
 router.put("/admin/signup", require("./admin/addAdmin")); // create new admin
@@ -16,16 +20,11 @@ router.get("/admin/orders", checkAdminToken, require("./common/editUser")); // A
 router.put("/user", checkAdminToken, require("./admin/getOrders")); // Admin get all orders
 
 //Common routes
-router.post(
-  "/editUser",
-  checkUserToken,
-  checkAdminToken,
-  require("./common/editUser")
-); // edit user
+router.post("/editUser", checkGlobalToken, require("./common/editUser")); // edit user
 router.get(
   "/products",
-  checkAdminToken,
-  checkUserToken,
+  checkGlobalToken,
+
   require("./common/getProducts")
 ); // Get all the products
 
