@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const cookeiParser = require("cookie-parser");
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 
 //Init
 require("./init");
